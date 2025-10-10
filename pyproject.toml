@@ -53,7 +53,7 @@ keywords = [
 ]
 
 
-[project.optional-dependencies]
+[dependency-groups]
 dev = [
     # Core deps (pinned)
     "rich==13.8.1",
