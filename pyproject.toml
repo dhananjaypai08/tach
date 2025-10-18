@@ -85,6 +85,9 @@ vscode = [
 Homepage = "https://github.com/gauge-sh/tach"
 Issues = "https://github.com/gauge-sh/tach/issues"
 
+[tool.pyprojectx]
+cwd = "."
+
 [tool.ruff]
 src = ["python"]
 exclude = ["python/tests/example"]
