@@ -88,6 +88,9 @@ Issues = "https://github.com/gauge-sh/tach/issues"
 [tool.pyprojectx]
 cwd = "."
 
+[tool.uv]
+default-groups = ["dev", "vscode"]
+
 [tool.ruff]
 src = ["python"]
 exclude = ["python/tests/example"]
