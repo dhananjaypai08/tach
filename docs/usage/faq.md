@@ -80,5 +80,4 @@ Do not report security vulnerabilities through public GitHub issues. Instead, pl
 
 ### What information does Tach track?
 
-Tach tracks anonymized usage and error report statistics; we ascribe to Posthog's approach as detailed [here](https://posthog.com/blog/open-source-telemetry-ethical).
-If you would like to opt out of sending anonymized info, you can set `disable_logging` to `true` in your `tach.toml`.
+None
