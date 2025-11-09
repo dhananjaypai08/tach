@@ -142,8 +142,7 @@ Tach also supports:
 - [Inline 'ignore' comments](https://docs.gauge.sh/usage/tach-ignore)
 - [Pre-commit hooks](https://docs.gauge.sh/usage/commands#tach-install)
 
-More info in the [docs](https://docs.gauge.sh/). Tach logs anonymized usage statistics which can be [opted out](https://docs.gauge.sh/usage/faq/) of.
-If you have any feedback, we'd love to talk!
+More info in the [docs](https://docs.gauge.sh/). If you have any feedback, we'd love to talk!
 
 If you have any questions or run into any issues, let us know by submitting a [Github Issue](https://github.com/gauge-sh/tach/issues)!
 
