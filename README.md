@@ -1,4 +1,4 @@
-# detach
+# Tach
 
 [![downloads](https://static.pepy.tech/badge/tach/month)](https://pepy.tech/project/tach)
 [![version](https://img.shields.io/pypi/v/tach.svg)](https://pypi.Python.org/pypi/tach)
