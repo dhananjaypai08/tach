@@ -15,17 +15,7 @@ endif
 
 .PHONY: deps
 deps: ## Install dependencies
-	python -m pip install --upgrade uv
-
-	@if [ ! -d "$(VENV)" ]; then \
-		uv venv $(VENV); \
-		echo "Virtual environment created at $(VENV)"; \
-	else \
-		echo "Virtual environment already exists at $(VENV)"; \
-	fi
-
-	source $(VENV_BIN)/activate && \
-	uv pip install pip maturin
+	./pw uv sync
 
 	@unset CONDA_PREFIX && \
 	source $(VENV_BIN)/activate && \
@@ -34,7 +24,7 @@ deps: ## Install dependencies
 
 .PHONY: install
 install: ##  Install the crate as module in the current virtualenv
-	maturin develop --uv --release -E dev
+	maturin develop --uv -E dev
 
 
 .PHONY: profiling
@@ -76,19 +66,21 @@ lint-rust: ## Lint Rust code
 
 .PHONY: type-check
 type-check: ## Run type checking
-	$(VENV_BIN)/pyright
+	$(VENV_BIN)/basedpyright
 
 
 .PHONY: docs docs-serve docs-build
 docs: docs-serve ## Alias for docs-serve
 
 docs-serve: ## Serve documentation locally with live reloading
-	pip install -r docs/requirements.txt
-	mkdocs serve
+	./pw uv run --group docs mkdocs serve
 
 docs-build: ## Build the documentation site
-	pip install -r docs/requirements.txt
-	mkdocs build
+	./pw uv run --group docs mkdocs build --strict
+
+
+docs-check: ## Build the documentation site
+	./pw uv run --group docs mkdocs build
 
 
 .PHONY: help

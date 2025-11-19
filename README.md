@@ -1,12 +1,11 @@
-# Tach
-> ⚠️ **UNMAINTAINED**: This repository is no longer actively maintained. Issues and pull requests may not receive a response.
+# detach
 
 [![downloads](https://static.pepy.tech/badge/tach/month)](https://pepy.tech/project/tach)
 [![version](https://img.shields.io/pypi/v/tach.svg)](https://pypi.Python.org/pypi/tach)
 [![license](https://img.shields.io/pypi/l/tach.svg)](https://pypi.Python.org/pypi/tach)
 [![python](https://img.shields.io/pypi/pyversions/tach.svg)](https://pypi.Python.org/pypi/tach)
 [![ci](https://github.com/gauge-sh/tach/actions/workflows/ci.yml/badge.svg)](https://github.com/gauge-sh/tach/actions/workflows/ci.yml)
-[![pyright](https://microsoft.github.io/pyright/img/pyright_badge.svg)](https://microsoft.github.io/pyright/)
+[![basedpyright - checked](https://img.shields.io/badge/basedpyright-checked-ffc000)](https://docs.basedpyright.com)
 [![ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 
 Tach is a Python tool to enforce dependencies and interfaces, written in Rust.
@@ -90,7 +89,7 @@ Give both a try and run `tach check` again. This will generate an error:
 
 Each error indicates an import which violates your dependencies. If your terminal supports hyperlinks, click on the file path to go directly to the error.
 
-When an error is detected, `tach check` will exit with a non-zero code. It can be easily integrated with CI/CD, [Pre-commit hooks](https://docs.gauge.sh/usage/commands#tach-install), and [VS Code](https://marketplace.visualstudio.com/items?itemName=Gauge.tach), and more!
+When an error is detected, `tach check` will exit with a non-zero code. It can be easily integrated with CI/CD, [Pre-commit hooks](https://docs.gauge.sh/usage/commands#tach-install), and [VS Code](https://marketplace.visualstudio.com/items?itemName=detachhead.dtach), and more!
 
 ### Extras
 
@@ -143,8 +142,7 @@ Tach also supports:
 - [Inline 'ignore' comments](https://docs.gauge.sh/usage/tach-ignore)
 - [Pre-commit hooks](https://docs.gauge.sh/usage/commands#tach-install)
 
-More info in the [docs](https://docs.gauge.sh/). Tach logs anonymized usage statistics which can be [opted out](https://docs.gauge.sh/usage/faq/) of.
-If you have any feedback, we'd love to talk!
+More info in the [docs](https://docs.gauge.sh/). If you have any feedback, we'd love to talk!
 
 If you have any questions or run into any issues, let us know by submitting a [Github Issue](https://github.com/gauge-sh/tach/issues)!
 

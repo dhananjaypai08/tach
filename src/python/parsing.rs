@@ -1,10 +1,10 @@
 use std::{ops::Deref, path::PathBuf};
 
 use ruff_python_ast::{
-    statement_visitor::{walk_stmt, StatementVisitor},
     Expr, Mod, Stmt,
+    statement_visitor::{StatementVisitor, walk_stmt},
 };
-use ruff_python_parser::{parse, Mode};
+use ruff_python_parser::{Mode, parse};
 
 use super::error::ParsingError;
 use crate::filesystem::module_to_file_path;
@@ -13,7 +13,9 @@ pub type Result<T> = std::result::Result<T, ParsingError>;
 
 /// Use the ruff-python-parser crate to parse a Python source file into an AST
 pub fn parse_python_source(python_source: &str) -> Result<Mod> {
-    Ok(parse(python_source, Mode::Module)?.syntax().to_owned())
+    Ok(parse(python_source, Mode::Module.into())?
+        .syntax()
+        .to_owned())
 }
 
 struct InterfaceVisitor {

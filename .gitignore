@@ -1,5 +1,4 @@
 # Byte-compiled / optimized / DLL files
-.vscode/
 .pyirc
 .python-version
 __pycache__/
@@ -186,3 +185,6 @@ profile.json
 
 # Scratchpad
 .scratch/
+
+# pyprojectx
+.pyprojectx

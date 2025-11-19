@@ -7,7 +7,7 @@ use crate::config::ProjectConfig;
 use crate::dependencies::import::LocatedImport;
 use crate::filesystem;
 use crate::processors::ignore_directive::get_ignore_directives;
-use crate::processors::import::{get_normalized_imports, Result};
+use crate::processors::import::{Result, get_normalized_imports};
 use crate::resolvers::{PackageResolution, PackageResolutionError, PackageResolver};
 
 #[pyclass(get_all)]
@@ -16,13 +16,16 @@ pub struct PythonImport {
     pub line_number: usize,
 }
 
-impl IntoPy<PyObject> for LocatedImport {
-    fn into_py(self, py: Python<'_>) -> PyObject {
+impl<'py> IntoPyObject<'py> for LocatedImport {
+    type Target = PythonImport;
+    type Output = Bound<'py, Self::Target>;
+    type Error = pyo3::PyErr;
+    fn into_pyobject(self, py: Python<'py>) -> std::result::Result<Self::Output, Self::Error> {
         PythonImport {
             module_path: self.import.module_path,
             line_number: self.alias_line_number,
         }
-        .into_py(py)
+        .into_pyobject(py)
     }
 }
 

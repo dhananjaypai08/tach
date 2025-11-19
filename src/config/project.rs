@@ -15,7 +15,7 @@ use super::external::ExternalDependencyConfig;
 use super::interfaces::InterfaceConfig;
 use super::layers::LayerConfig;
 use super::map::MapConfig;
-use super::modules::{deserialize_modules, serialize_modules, DependencyConfig, ModuleConfig};
+use super::modules::{DependencyConfig, ModuleConfig, deserialize_modules, serialize_modules};
 use super::plugins::PluginsConfig;
 use super::root_module::RootModuleTreatment;
 use super::rules::RulesConfig;
@@ -72,9 +72,6 @@ pub struct ProjectConfig {
     #[serde(default, skip_serializing_if = "Not::not")]
     #[pyo3(get)]
     pub exact: bool,
-    #[serde(default, skip_serializing_if = "Not::not")]
-    #[pyo3(get)]
-    pub disable_logging: bool,
     #[serde(
         default = "utils::default_true",
         skip_serializing_if = "utils::is_true"
@@ -147,7 +144,6 @@ impl Default for ProjectConfig {
             cache: Default::default(),
             external: Default::default(),
             exact: Default::default(),
-            disable_logging: Default::default(),
             include_string_imports: Default::default(),
             forbid_circular_dependencies: Default::default(),
             respect_gitignore: true,
@@ -496,7 +492,7 @@ impl ProjectConfig {
     }
 
     fn __str__(&self) -> String {
-        format!("{:#?}", self)
+        format!("{self:#?}")
     }
 
     fn serialize_json(&self) -> String {

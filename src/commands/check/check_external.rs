@@ -9,8 +9,8 @@ use crate::diagnostics::{
 use crate::filesystem::{self, ProjectFile};
 use crate::interrupt::check_interrupt;
 use crate::modules::{ModuleTree, ModuleTreeBuilder};
-use crate::processors::file_module::FileModule;
 use crate::processors::ExternalDependencyExtractor;
+use crate::processors::file_module::FileModule;
 use crate::resolvers::{PackageResolver, SourceRootResolver};
 use pyo3::prelude::*;
 use std::collections::{HashMap, HashSet};
@@ -133,7 +133,7 @@ struct CheckExternalMetadata {
 /// Get metadata for checking external dependencies.
 fn get_check_external_metadata(project_config: &ProjectConfig) -> Result<CheckExternalMetadata> {
     Python::with_gil(|py| {
-        let external_utils = PyModule::import_bound(py, "tach.utils.external")
+        let external_utils = PyModule::import(py, "tach.utils.external")
             .expect("Failed to import tach.utils.external");
         let mut module_mappings: HashMap<String, Vec<String>> = external_utils
             .getattr("get_module_mappings")
@@ -250,7 +250,7 @@ fn check_with_modules(
                                     file_path: file_path.display().to_string(),
                                 },
                             ),
-                        )]
+                        )];
                     }
                 };
 
