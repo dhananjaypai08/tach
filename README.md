@@ -89,7 +89,7 @@ Give both a try and run `tach check` again. This will generate an error:
 
 Each error indicates an import which violates your dependencies. If your terminal supports hyperlinks, click on the file path to go directly to the error.
 
-When an error is detected, `tach check` will exit with a non-zero code. It can be easily integrated with CI/CD, [Pre-commit hooks](https://docs.gauge.sh/usage/commands#tach-install), and [VS Code](https://marketplace.visualstudio.com/items?itemName=Gauge.tach), and more!
+When an error is detected, `tach check` will exit with a non-zero code. It can be easily integrated with CI/CD, [Pre-commit hooks](https://docs.gauge.sh/usage/commands#tach-install), and [VS Code](https://marketplace.visualstudio.com/items?itemName=detachhead.dtach), and more!
 
 ### Extras
 

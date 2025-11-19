@@ -1,5 +1,5 @@
 {
-    "name": "tach",
+    "name": "dtach",
     "displayName": "Tach",
     "description": "a maintained fork of the abandoned `tach` linter",
     "version": "0.30.0",
