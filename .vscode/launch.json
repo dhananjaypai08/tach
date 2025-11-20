@@ -11,6 +11,24 @@
             "program": "${workspaceRoot}/.venv/bin/python",
             "args": ["-m", "tach", "check"],
             "cwd": "${workspaceRoot}"
+        },
+        {
+            "name": "Debug Extension",
+            "type": "extensionHost",
+            "request": "launch",
+            "args": [
+                "--extensionDevelopmentPath=${workspaceFolder}/vscode",
+                "--disable-extension=detachhead.dtach"
+            ],
+            "smartStep": true,
+            "sourceMaps": true,
+            "outFiles": ["${workspaceFolder}/vscode/dist/**/*.js"],
+            "preLaunchTask": "npm: compile - vscode",
+            "presentation": {
+                "hidden": false,
+                "order": 2
+            },
         }
     ]
+
 }
