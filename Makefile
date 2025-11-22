@@ -19,17 +19,17 @@ deps: ## Install dependencies
 
 	@unset CONDA_PREFIX && \
 	source $(VENV_BIN)/activate && \
-	maturin develop --profile release -E dev
+	maturin develop --profile release
 
 
 .PHONY: install
 install: ##  Install the crate as module in the current virtualenv
-	maturin develop --uv -E dev
+	maturin develop --uv
 
 
 .PHONY: profiling
 profiling:
-	maturin develop --uv --profile profiling -E dev
+	maturin develop --uv --profile profiling
 
 
 .PHONY: test
@@ -81,6 +81,10 @@ docs-build: ## Build the documentation site
 
 docs-check: ## Build the documentation site
 	./pw uv run --group docs mkdocs build
+
+
+ensure-debugging-enabled: ## enable support for attaching debuggers (required for debugging the language server in the vscode extension)
+	./pw uv run scripts/ensure_debugging_enabled.py
 
 
 .PHONY: help

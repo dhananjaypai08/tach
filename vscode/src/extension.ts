@@ -53,7 +53,7 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
         if (interpreter && interpreter.length > 0) {
             if (checkVersion(await resolveInterpreter(interpreter))) {
                 traceVerbose(`Using interpreter from ${serverInfo.module}.interpreter: ${interpreter.join(' ')}`);
-                lsClient = await restartServer(serverId, serverName, outputChannel, lsClient);
+                lsClient = await restartServer(serverId, serverName, outputChannel, context, lsClient);
             }
             return;
         }
@@ -61,7 +61,7 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
         const interpreterDetails = await getInterpreterDetails();
         if (interpreterDetails.path) {
             traceVerbose(`Using interpreter from Python extension: ${interpreterDetails.path.join(' ')}`);
-            lsClient = await restartServer(serverId, serverName, outputChannel, lsClient);
+            lsClient = await restartServer(serverId, serverName, outputChannel, context, lsClient);
             return;
         }
 

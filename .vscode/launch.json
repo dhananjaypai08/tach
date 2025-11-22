@@ -5,12 +5,48 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "tach check",
+            "name": "tach check current project",
             "type": "lldb",
             "request": "launch",
             "program": "${workspaceRoot}/.venv/bin/python",
             "args": ["-m", "tach", "check"],
             "cwd": "${workspaceRoot}"
+        },
+        {
+            "name": "Debug Extension",
+            "type": "extensionHost",
+            "request": "launch",
+            "args": [
+                "--extensionDevelopmentPath=${workspaceFolder}/vscode",
+                "--disable-extension=detachhead.dtach"
+            ],
+            "smartStep": true,
+            "sourceMaps": true,
+            "outFiles": ["${workspaceFolder}/vscode/dist/**/*.js"],
+            "preLaunchTask": "npm: compile - vscode",
+            "presentation": {
+                "group": "lsp"
+            }
+        },
+        {
+            "name": "attach server",
+            "type": "lldb",
+            "request": "attach",
+            "pid": "${input:pickTachProcess}",
+            "preLaunchTask": "make: ensure-debugging-enabled",
+            "presentation": {
+                "group": "lsp"
+            },
+        }
+    ],
+    "inputs": [
+        {
+            "id": "pickTachProcess",
+            "type": "command",
+            "command": "lldb.pickProcess",
+            "args": {
+                "filter": "tach server"
+            }
         }
     ]
 }

@@ -1,7 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-import { Disposable, env, LogOutputChannel, workspace } from 'vscode';
+import { execFile } from 'child_process';
+import { glob } from 'glob';
+import { Disposable, env, ExtensionContext, ExtensionMode, LogOutputChannel, workspace } from 'vscode';
 import { State } from 'vscode-languageclient';
 import {
     LanguageClient,
@@ -9,13 +11,13 @@ import {
     RevealOutputChannelOn,
     ServerOptions,
 } from 'vscode-languageclient/node';
-import { BUNDLED_PYTHON_LIBS_DIR } from './constants';
+import { BUNDLED_PYTHON_LIBS_DIR, PROJECT_ROOT_DIR } from './constants';
 import { traceError, traceInfo, traceVerbose } from './log/logging';
 import { getExtensionSettings, getGlobalSettings, getWorkspaceSettings, ISettings } from './settings';
 import { getLSClientTraceLevel, getProjectRoot } from './utilities';
-import { isVirtualWorkspace } from './vscodeapi';
-import { execFile } from 'child_process';
 import { supportsCustomConfig, VersionInfo } from './version';
+import { isVirtualWorkspace } from './vscodeapi';
+import path = require('path');
 
 export type IInitOptions = { settings: ISettings[]; globalSettings: ISettings };
 
@@ -44,6 +46,7 @@ async function createServer(
     serverName: string,
     outputChannel: LogOutputChannel,
     initializationOptions: IInitOptions,
+    context: ExtensionContext
 ): Promise<LanguageClient> {
     const command = settings.interpreter[0];
     const cwd = settings.cwd;
@@ -52,7 +55,12 @@ async function createServer(
     newEnv.LS_IMPORT_STRATEGY = settings.importStrategy;
 
     if (settings.importStrategy === 'useBundled') {
-        newEnv.PYTHONPATH = BUNDLED_PYTHON_LIBS_DIR;
+        if (context.extensionMode === ExtensionMode.Development) {
+            const libPath = await glob('{l,L}ib/python3.*/site-packages', {cwd: path.join(PROJECT_ROOT_DIR, '.venv'), absolute: true})
+            newEnv.PYTHONPATH = [libPath, path.join(PROJECT_ROOT_DIR, 'python')].join(path.delimiter)
+        } else {
+            newEnv.PYTHONPATH = BUNDLED_PYTHON_LIBS_DIR
+        }
     }
 
 
@@ -101,11 +109,12 @@ function createConfigWatcher(
     serverId: string,
     serverName: string,
     outputChannel: LogOutputChannel,
-    lsClient: LanguageClient
+    lsClient: LanguageClient,
+    context: ExtensionContext,
 ): Disposable {
     return workspace.createFileSystemWatcher(pattern).onDidChange(async () => {
         traceInfo(`Configuration file changed, restarting server...`);
-        await restartServer(serverId, serverName, outputChannel, lsClient);
+        await restartServer(serverId, serverName, outputChannel, context, lsClient);
     });
 }
 
@@ -113,6 +122,7 @@ export async function restartServer(
     serverId: string,
     serverName: string,
     outputChannel: LogOutputChannel,
+    context: ExtensionContext,
     lsClient?: LanguageClient,
 ): Promise<LanguageClient | undefined> {
     if (lsClient) {
@@ -127,7 +137,7 @@ export async function restartServer(
     const newLSClient = await createServer(workspaceSetting, serverId, serverName, outputChannel, {
         settings: await getExtensionSettings(serverId, true),
         globalSettings: await getGlobalSettings(serverId, false),
-    });
+    },context);
     traceInfo(`Server: Start requested.`);
     _disposables.push(
         newLSClient.onDidChangeState((e) => {
@@ -152,7 +162,8 @@ export async function restartServer(
                 serverId,
                 serverName,
                 outputChannel,
-                newLSClient
+                newLSClient,
+                context
             )
         );
     } catch (ex) {
