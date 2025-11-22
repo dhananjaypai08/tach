@@ -83,6 +83,10 @@ docs-check: ## Build the documentation site
 	./pw uv run --group docs mkdocs build
 
 
+ensure-debugging-enabled: ## enable support for attaching debuggers (required for debugging the language server in the vscode extension)
+	./pw uv run scripts/ensure_debugging_enabled.py
+
+
 .PHONY: help
 help:  ## Display this help screen
 	@echo -e "\033[1mAvailable commands:\033[0m"

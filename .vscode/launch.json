@@ -33,6 +33,7 @@
             "type": "lldb",
             "request": "attach",
             "pid": "${input:pickTachProcess}",
+            "preLaunchTask": "make: ensure-debugging-enabled",
             "presentation": {
                 "group": "lsp"
             },
