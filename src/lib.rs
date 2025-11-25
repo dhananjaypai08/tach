@@ -18,6 +18,7 @@ pub mod processors;
 pub mod python;
 pub mod resolvers;
 pub mod tests;
+use crate::config::RespectGitIgnore;
 use commands::{check, report, server, sync, test};
 use diagnostics::serialize_diagnostics_json;
 use pyo3::{prelude::*, types::PyTuple};
@@ -247,7 +248,7 @@ fn create_computation_cache_key(
     file_dependencies: Vec<String>,
     env_dependencies: Vec<String>,
     backend: String,
-    respect_gitignore: bool,
+    respect_gitignore: RespectGitIgnore,
 ) -> String {
     cache::create_computation_cache_key(
         &project_root,

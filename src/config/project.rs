@@ -4,6 +4,7 @@ use std::iter;
 use std::ops::Not;
 use std::path::PathBuf;
 
+use crate::config::RespectGitIgnore;
 use crate::filesystem::{self, module_path_is_included_in_paths};
 use crate::resolvers::SourceRootResolver;
 
@@ -84,12 +85,9 @@ pub struct ProjectConfig {
     #[serde(default, skip_serializing_if = "Not::not")]
     #[pyo3(get)]
     pub forbid_circular_dependencies: bool,
-    #[serde(
-        default = "utils::default_true",
-        skip_serializing_if = "utils::is_true"
-    )]
-    #[pyo3(get, set)]
-    pub respect_gitignore: bool,
+    #[serde(default, skip_serializing_if = "utils::is_default")]
+    #[pyo3(get)]
+    pub respect_gitignore: RespectGitIgnore,
     #[serde(skip)]
     #[pyo3(get)]
     pub use_regex_matching: bool,
@@ -146,7 +144,7 @@ impl Default for ProjectConfig {
             exact: Default::default(),
             include_string_imports: Default::default(),
             forbid_circular_dependencies: Default::default(),
-            respect_gitignore: true,
+            respect_gitignore: RespectGitIgnore::True,
             use_regex_matching: Default::default(),
             root_module: Default::default(),
             rules: Default::default(),

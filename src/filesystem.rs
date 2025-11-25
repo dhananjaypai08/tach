@@ -11,6 +11,7 @@ use itertools::Itertools;
 use thiserror::Error;
 
 use crate::config::ModuleConfig;
+use crate::config::RespectGitIgnore;
 use crate::config::root_module::ROOT_MODULE_SENTINEL_TAG;
 
 #[derive(Error, Debug)]
@@ -304,15 +305,16 @@ impl FSWalker {
     pub fn try_new<P: AsRef<Path>>(
         project_root: P,
         exclude_paths: &[String],
-        respect_gitignore: bool,
+        respect_gitignore: RespectGitIgnore,
     ) -> Result<Self> {
         let mut walk_builder = ignore::WalkBuilder::new(project_root.as_ref());
-        walk_builder.require_git(false);
-        if !respect_gitignore {
+        if respect_gitignore == RespectGitIgnore::False {
             // Disable all ignore filters
             walk_builder.ignore(false);
             walk_builder.git_ignore(false);
             walk_builder.git_global(false);
+        } else {
+            walk_builder.require_git(respect_gitignore == RespectGitIgnore::IfGitRepo);
         }
 
         let mut override_builder = ignore::overrides::OverrideBuilder::new(project_root.as_ref());
@@ -330,7 +332,7 @@ impl FSWalker {
     }
 
     pub fn empty<P: AsRef<Path>>(project_root: P) -> Self {
-        Self::try_new(project_root, &[], false).unwrap()
+        Self::try_new(project_root, &[], RespectGitIgnore::False).unwrap()
     }
 
     pub fn is_path_excluded<P: AsRef<Path>>(&self, path: P, is_dir: bool) -> bool {
