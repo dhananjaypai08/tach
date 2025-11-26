@@ -79,4 +79,6 @@
   "rust-analyzer.check.command": "clippy",
   // this is a top-level folder but the ** is still needed due to https://github.com/microsoft/vscode/issues/92114
   "npm.exclude": "**/.venv/**/*",
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+  "typescript.tsdk": "vscode/node_modules/typescript/lib",
 }

@@ -23,7 +23,11 @@ This is the project-level configuration file which should be in the root of your
 
 `forbid_circular_dependencies` (default: **false**) is a flag which causes `tach check` to fail if any circular dependencies are detected.
 
-`respect_gitignore` (default: **true**) is a flag which causes Tach to exclude files and directories matched by `.gitignore`.
+`respect_gitignore` (default: **true**) is a flag which causes Tach to exclude files and directories matched by `.gitignore`. Possible values:
+
+- `true` - always respect `.gitignore` files
+- `"if_git_repo"` - only respect a `.gitignore` file if it's part of the git repository associated with the directory tach is executed in, otherwise ignore it.
+- `false` - never respect `.gitignore` files
 
 `root_module` takes a string enum value, and determines how Tach treats code which lives within the project but is not covered by an explicit module. This is described in detail [below](#the-root-module)
 

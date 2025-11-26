@@ -7,6 +7,7 @@ use std::{env, fs};
 use thiserror::Error;
 use toml::Value;
 
+use crate::config::RespectGitIgnore;
 use crate::filesystem;
 
 #[derive(Error, Debug)]
@@ -137,7 +138,7 @@ pub fn create_computation_cache_key(
     file_dependencies: Vec<String>,
     env_dependencies: Vec<String>,
     _backend: String,
-    respect_gitignore: bool,
+    respect_gitignore: RespectGitIgnore,
 ) -> String {
     // Exclusions are not applied when building cache keys (paths are empty here)
     let walker = filesystem::FSWalker::try_new(project_root, &[], respect_gitignore).unwrap();

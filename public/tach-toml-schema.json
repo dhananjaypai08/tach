@@ -378,7 +378,16 @@
       "description": "Disallow listed dependencies that are not used in the project"
     },
     "respect_gitignore": {
-      "type": "boolean",
+      "oneOf": [
+        {
+          "type": "boolean",
+          "default": true
+        },
+        {
+          "type": "string",
+          "enum": ["if_git_repo"]
+        }
+      ],
       "default": true,
       "description": "Exclude files and directories matched by '.gitignore'"
     },
