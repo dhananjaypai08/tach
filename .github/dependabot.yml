@@ -7,9 +7,16 @@ version: 2
 updates:
   - package-ecosystem: "uv" # See documentation for possible values
     directory: "/" # Location of package manifests
-    schedule:
-      interval: "weekly"
+    patterns:
+      - '*'
+    multi-ecosystem-group: "all"
   - package-ecosystem: "cargo"
     directory: "/"
+    patterns:
+      - '*'
+    multi-ecosystem-group: "all"
+
+multi-ecosystem-groups:
+  all:
     schedule:
       interval: "weekly"
