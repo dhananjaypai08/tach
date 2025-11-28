@@ -4,13 +4,13 @@ import os
 import stat
 from functools import lru_cache
 from pathlib import Path
-from typing import Generator, Optional
+from typing import Generator
 
 from tach.utils.display import BCOLORS, colorize
 from tach.utils.exclude import is_path_excluded
 
 
-def write_file(path: Path, content: str, root: Optional[Path] = None):
+def write_file(path: Path, content: str, root: Path | None = None):
     path.write_text(content)
     try:
         display_path = path.relative_to(root or Path.cwd())
@@ -25,8 +25,8 @@ def mark_executable(path: Path):
 
 def walk(
     root: Path,
-    project_root: Optional[Path] = None,
-    exclude_paths: Optional[list[str]] = None,
+    project_root: Path | None = None,
+    exclude_paths: list[str] | None = None,
     depth: int | None = None,
 ) -> Generator[tuple[Path, list[Path]], None, None]:
     if depth is not None and depth <= 0:
@@ -64,8 +64,8 @@ def walk(
 
 def walk_pyfiles(
     root: Path,
-    project_root: Optional[Path] = None,
-    exclude_paths: Optional[list[str]] = None,
+    project_root: Path | None = None,
+    exclude_paths: list[str] | None = None,
     depth: int | None = None,
 ) -> Generator[Path, None, None]:
     for dirpath, filepaths in walk(
