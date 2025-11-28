@@ -2,6 +2,8 @@ from enum import Enum
 from pathlib import Path
 from typing import Literal
 
+from typing_extensions import TypeAlias
+
 class PythonImport:
     module_path: str
     line_number: int
@@ -134,7 +136,8 @@ RuleSetting = Literal["error", "warn", "off"]
 
 RootModuleTreatment = Literal["allow", "ignore", "dependenciesonly", "forbid"]
 
-type RespectGitIgnore = bool | Literal["if_git_repo"]
+# ideally this should be using the new type alias syntax. see https://github.com/astral-sh/ruff/issues/21677
+RespectGitIgnore: TypeAlias = bool | Literal["if_git_repo"]
 
 class RulesConfig:
     unused_ignore_directives: RuleSetting
