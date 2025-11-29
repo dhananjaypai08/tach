@@ -95,7 +95,7 @@ Issues = "https://github.com/gauge-sh/tach/issues"
 cwd = "."
 
 [tool.uv]
-default-groups = ["dev", "vscode"]
+default-groups = ["dev", "vscode", "docs"]
 
 [tool.ruff]
 src = ["python"]
