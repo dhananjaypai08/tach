@@ -135,6 +135,7 @@ build-backend = "maturin"
 python-source = "python"
 module-name = "tach.extension"
 features = ["pyo3/extension-module"]
+editable-profile = "dev"
 
 [project.scripts]
 tach = "tach.start:start"
