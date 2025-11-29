@@ -17,16 +17,6 @@ endif
 deps: ## Install dependencies
 	./pw uv sync
 
-	@unset CONDA_PREFIX && \
-	source $(VENV_BIN)/activate && \
-	maturin develop --profile release
-
-
-.PHONY: install
-install: ##  Install the crate as module in the current virtualenv
-	maturin develop --uv
-
-
 .PHONY: profiling
 profiling:
 	maturin develop --uv --profile profiling

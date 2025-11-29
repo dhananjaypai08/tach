@@ -7,8 +7,12 @@ This guide explains how to work with Tach's documentation system, which uses MkD
 You need Python installed on your system and the documentation dependencies:
 
 ```bash
-pip install -r docs/requirements.txt
+./pw uv sync --only-group docs
 ```
+
+!!! note
+
+    if you've already followed [the setup instructions](./setting-up-project.md#1-automated-setup) then this step isn't required.
 
 ## Local Development
 

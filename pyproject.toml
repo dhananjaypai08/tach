@@ -95,7 +95,7 @@ Issues = "https://github.com/gauge-sh/tach/issues"
 cwd = "."
 
 [tool.uv]
-default-groups = ["dev", "vscode"]
+default-groups = ["dev", "vscode", "docs"]
 
 [tool.ruff]
 src = ["python"]
@@ -135,6 +135,7 @@ build-backend = "maturin"
 python-source = "python"
 module-name = "tach.extension"
 features = ["pyo3/extension-module"]
+editable-profile = "dev"
 
 [project.scripts]
 tach = "tach.start:start"
