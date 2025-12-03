@@ -15,7 +15,7 @@ This is the project-level configuration file which should be in the root of your
 `exclude` accepts a list of directory patterns to exclude from checking. These should be glob paths which match from the beginning of a given file path. For example: `project/*.tests` would match any path beginning with `project/` and ending with `.tests`.
 
 !!! note
-        Tach uses forward slashes to match path separators, even on Windows.
+    Tach uses forward slashes to match path separators, even on Windows.
 
 `ignore_type_checking_imports` (default: **true**) is a flag which silences `tach check` failures caused by imports under a `TYPE_CHECKING` conditional block.
 
@@ -111,25 +111,33 @@ unused_ignore_directives = "warn"
 Each module listed under the `modules` key above can accept the following attributes:
 
 - `path` the Python import path to the module (e.g. `a.b` for `<root>/a/b.py`)
-!!! note
+
+    !!! note
         Glob patterns are allowed. The pattern `"libs.**"` would define the default configuration for any module under the `libs` namespace.<br/><br/>This can be overridden for specific modules by defining them later in the file using a concrete pattern like `"libs.module"`.
-!!! note
-        A module can also define `paths` as a shorthand for multiple module definitions. This allows specifying allowed dependencies and other attributes as a group.<br></br><br></br>Example: `paths = ["a.b", "a.c"]`
-    - `depends_on` a list of module paths which this module can import from
-!!! note
+
+    !!! note
+        A module can also define `paths` as a shorthand for multiple module definitions. This allows specifying allowed dependencies and other attributes as a group. Example: `paths = ["a.b", "a.c"]`
+
+- `depends_on` a list of module paths which this module can import from
+
+    !!! note
         Glob patterns are allowed. The pattern `"libs.**"` would allow dependencies on any module under the `libs` namespace.
-!!! note
+
+    !!! note
         Omitting the `depends_on` field means the module will be allowed to import from any other module. However, it will still be subject to those modules' [public interfaces](#interfaces).
-    - `cannot_depend_on` a list of module paths which this module cannot import from
-!!! note
+
+- `cannot_depend_on` a list of module paths which this module cannot import from
+
+    !!! note
         This takes precedence over `depends_on`. In other words, if `cannot_depend_on = ["module"]`, then `depends_on = ["module"]` will have no effect.
-    - `layer` (optional) the [**layer**](#layers) which holds this module
-    - `visibility` (optional) a list of other modules which can import from this module
-    - `utility` (default: `false`) marks this module as a **Utility**, meaning all other modules may import from it without declaring an explicit dependency
-    - `unchecked` (default: `false`) marks this module as [**unchecked**](unchecked-modules.md), meaning Tach will not check its imports
+
+- `layer` (optional) the [**layer**](#layers) which holds this module
+- `visibility` (optional) a list of other modules which can import from this module
+- `utility` (default: `false`) marks this module as a **Utility**, meaning all other modules may import from it without declaring an explicit dependency
+- `unchecked` (default: `false`) marks this module as [**unchecked**](unchecked-modules.md), meaning Tach will not check its imports
 
 !!! note
-        Tach also supports [deprecating individual dependencies](deprecate.md).
+    Tach also supports [deprecating individual dependencies](deprecate.md).
 
 ## Interfaces
 
@@ -153,10 +161,10 @@ More specifically:
 [More details here.](interfaces.md)
 
 !!! note
-        If an interface entry does not specify `from`, all modules will adopt the interface.
+    If an interface entry does not specify `from`, all modules will adopt the interface.
 
 !!! note
-        A module can match multiple interface entries - if an import matches _any_ of the entries, it will be considered valid.
+    A module can match multiple interface entries - if an import matches _any_ of the entries, it will be considered valid.
 
 ## Layers
 
@@ -330,7 +338,7 @@ source_roots = [
 in your `tach.toml`, or use [`tach mod`](commands.md#tach-mod) and mark the same folders as source roots.
 
 !!! note
-        In `tach.toml`, each entry in `source_roots` is interpreted as a relative path from the project root.
+    In `tach.toml`, each entry in `source_roots` is interpreted as a relative path from the project root.
 
 After configuring your source roots as above, you can use `tach check-external`
 to validate that any dependencies between the packages are declared explicitly in the corresponding `pyproject.toml`.
@@ -423,7 +431,7 @@ source_roots = [
 in your `tach.toml`, or use [`tach mod`](commands.md#tach-mod) and mark the same folders as source roots.
 
 !!! note
-        In `tach.toml`, each entry in `source_roots` is interpreted as a relative path from the project root.
+    In `tach.toml`, each entry in `source_roots` is interpreted as a relative path from the project root.
 
 After configuring your source roots as above, you can use `tach check-external`
 to validate that any dependencies between the packages are declared explicitly in the corresponding `pyproject.toml`.
@@ -573,10 +581,10 @@ rename = [
 In most cases you should not need to specify `rename` manually (see the Note below).
 
 !!! note
-        It is recommended to run Tach within a virtual environment containing all of
-      your dependencies across all packages. This is because Tach uses the
-      distribution metadata to map module names like 'git' to their distributions
-      ('GitPython').
+    It is recommended to run Tach within a virtual environment containing all of
+    your dependencies across all packages. This is because Tach uses the
+    distribution metadata to map module names like 'git' to their distributions
+    ('GitPython').
 
 ## Rules
 
