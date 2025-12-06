@@ -17,6 +17,7 @@ with `depends_on`, which makes it easier to adopt in an existing project.
 Tach allows defining and enforcing a layered architecture with any number of vertically-stacked layers.
 
 When a module is assigned to a layer, this module:
+
 - may freely depend on modules in **lower layers**, *without declaring these dependencies*
 - must explicitly declare dependencies in **its own layer**
 - may never depend on modules in **higher layers**, *even if they are declared*
