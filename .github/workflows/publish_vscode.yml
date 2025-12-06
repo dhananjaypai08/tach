@@ -18,30 +18,50 @@ jobs:
     strategy:
       matrix:
         include:
-          # no windows 32 bit build because that doesn't seem to be supported by vsce
+          # windows (no windows 32 bit build because that doesn't seem to be supported by vsce)
           - os: windows-latest
             code-target: win32-x64
 
+          # manylinux
           - os: ubuntu-latest
             code-target: linux-x64
           - os: ubuntu-24.04-arm
             code-target: linux-arm64
 
-          # https://docs.github.com/en/actions/reference/runners/github-hosted-runners#single-cpu-runners
+          # musllinux (github doesn't have alpine runners so we need to run it in a docker container instead)
+          - os: ubuntu-latest
+            container: quay.io/pypa/musllinux_1_2_x86_64
+            code-target: alpine-x64
+          - os: ubuntu-24.04-arm
+            container: quay.io/pypa/musllinux_1_2_aarch64
+            code-target: alpine-arm64
+
+          # macos (https://docs.github.com/en/actions/reference/runners/github-hosted-runners#single-cpu-runners)
           - os: macos-13
             code-target: darwin-x64
           - os: macos-14
             code-target: darwin-arm64
 
     name: Build (${{ matrix.code-target }})
-    runs-on: ${{ matrix.os }}
+    runs-on: ${{ matrix.os || 'ubuntu-latest' }}
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - uses: actions/setup-python@v5
-      - run: ../pw uv run nox --session build_package
+      - if: matrix.container
+        uses: addnab/docker-run-action@v3
+        with:
+          image: ${{ matrix.container }}
+          options: -v ${{ github.workspace }}:/io -w /io
+          run: |
+            cd vscode
+            ../pw uv run nox --session build_package
+
+      - if: ${{ !matrix.container }}
+        uses: actions/setup-python@v5
+      - if: ${{ !matrix.container }}
+        run: ../pw uv run nox --session build_package
 
       # Build the extension.
       - name: Package Extension (release)
@@ -51,7 +71,7 @@ jobs:
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: dist-${{ matrix.target }}
+          name: dist-${{ matrix.code-target }}
           path: ${{ env.dist_path }}
 
   # Publish the built extension to the Marketplace & openVSX.
