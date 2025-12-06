@@ -46,8 +46,7 @@ jobs:
     runs-on: ${{ matrix.os || 'ubuntu-latest' }}
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - if: matrix.container
         uses: addnab/docker-run-action@v3
@@ -56,17 +55,18 @@ jobs:
           options: -v ${{ github.workspace }}:/io -w /io
           run: |
             cd vscode
-            ../pw uv run nox --session build_package
+            ../pw uv sync --only-group vscode
+            ../pw uv run --no-sync nox --session build_package
+            ../pw uv run npx vsce package -o "./dist/tach-${{ matrix.code-target }}.vsix" --target ${{ matrix.code-target }}
 
       - if: ${{ !matrix.container }}
         uses: actions/setup-python@v5
       - if: ${{ !matrix.container }}
-        run: ../pw uv run nox --session build_package
-
-      # Build the extension.
-      - name: Package Extension (release)
         run: |
-          ../pw npx vsce package -o "./dist/tach-${{ matrix.code-target }}.vsix" --target ${{ matrix.code-target }}
+          ../pw uv sync --only-group vscode
+          ../pw uv run --no-sync nox --session build_package
+          ../pw uv run npx vsce package -o "./dist/tach-${{ matrix.code-target }}.vsix" --target ${{ matrix.code-target }}
+
       # Upload the extension.
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
