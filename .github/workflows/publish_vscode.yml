@@ -1,4 +1,4 @@
-name: publish_vscode
+name: build & publish vscode extension
 
 on:
   pull_request:
