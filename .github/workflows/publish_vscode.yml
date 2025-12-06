@@ -77,33 +77,6 @@ jobs:
 
       # Download all built artifacts.
       - uses: actions/download-artifact@v4
-        with:
-          name: dist-aarch64-apple-darwin
-          path: ${{ env.dist_path }}
-      - uses: actions/download-artifact@v4
-        with:
-          name: dist-x86_64-apple-darwin
-          path: ${{ env.dist_path }}
-      - uses: actions/download-artifact@v4
-        with:
-          name: dist-x86_64-unknown-linux-gnu
-          path: ${{ env.dist_path }}
-      - uses: actions/download-artifact@v4
-        with:
-          name: dist-aarch64-unknown-linux-gnu
-          path: ${{ env.dist_path }}
-      - uses: actions/download-artifact@v4
-        with:
-          name: dist-arm-unknown-linux-gnueabihf
-          path: ${{ env.dist_path }}
-      - uses: actions/download-artifact@v4
-        with:
-          name: dist-x86_64-pc-windows-msvc
-          path: ${{ env.dist_path }}
-      - uses: actions/download-artifact@v4
-        with:
-          name: dist-aarch64-pc-windows-msvc
-          path: ${{ env.dist_path }}
       - run: ls -al ./dist
 
       - name: Install dependencies
