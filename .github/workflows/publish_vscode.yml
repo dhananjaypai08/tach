@@ -20,25 +20,20 @@ jobs:
         include:
           # no windows 32 bit build because that doesn't seem to be supported by vsce
           - os: windows-latest
-            target: x86_64-pc-windows-msvc
             code-target: win32-x64
 
           - os: ubuntu-latest
-            target: x86_64-unknown-linux-gnu
             code-target: linux-x64
           - os: ubuntu-24.04-arm
-            target: aarch64-unknown-linux-gnu
             code-target: linux-arm64
 
           # https://docs.github.com/en/actions/reference/runners/github-hosted-runners#single-cpu-runners
           - os: macos-13
-            target: x86_64-apple-darwin
             code-target: darwin-x64
           - os: macos-14
-            target: aarch64-apple-darwin
             code-target: darwin-arm64
 
-    name: Build (${{ matrix.target }})
+    name: Build (${{ matrix.code-target }})
     runs-on: ${{ matrix.os }}
 
     steps:
