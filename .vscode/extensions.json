@@ -10,5 +10,7 @@
         "rust-lang.rust-analyzer",
         "carlos-algms.make-task-provider",
         "vadimcn.vscode-lldb",
+        "mermaidchart.vscode-mermaid-chart",
+        "tintinweb.graphviz-interactive-preview",
     ]
 }
