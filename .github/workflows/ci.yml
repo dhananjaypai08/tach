@@ -24,7 +24,12 @@ jobs:
           check-latest: true
 
       - name: Install dependencies
-        run: ./pw uv sync --all-groups
+        # we need to change the python version used by uv here otherwise it wil use the version from .python-version.
+        # we also need to use the setup-python action for some reason even though uv can manage python versions because
+        # the rust compilation will otherwise fail
+        run: |
+          ./pw uv python pin ${{ matrix.python-version }}
+          ./pw uv sync --all-groups
 
       - name: Check ruff
         run: |
