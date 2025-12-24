@@ -5,15 +5,49 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "tach check current project",
+            "name":"tach check current project (python)",
+            "type":"debugpy",
+            "request":"launch",
+            "module":"tach",
+            "args": ["check"],
+            "presentation": {
+                "group": "check"
+            }
+        },
+        {
+            "name": "tach check current project (rust)",
             "type": "lldb",
             "request": "launch",
             "program": "${workspaceRoot}/.venv/bin/python",
             "args": ["-m", "tach", "check"],
-            "cwd": "${workspaceRoot}"
+            "cwd": "${workspaceRoot}",
+            "presentation": {
+                "group": "check"
+            }
         },
         {
-            "name": "Debug Extension",
+            "name":"tach test current project (python)",
+            "type":"debugpy",
+            "request":"launch",
+            "module":"pytest",
+            "args": ["-p", "tach.pytest_plugin"],
+            "presentation": {
+                "group": "test"
+            }
+        },
+        {
+            "name": "tach test current project (rust)",
+            "type": "lldb",
+            "request": "launch",
+            "program": "${workspaceRoot}/.venv/bin/python",
+            "args": ["-m", "pytest", "-p", "tach.pytest_plugin"],
+            "cwd": "${workspaceRoot}",
+            "presentation": {
+                "group": "test"
+            }
+        },
+        {
+            "name": "vscode extension (typescript)",
             "type": "extensionHost",
             "request": "launch",
             "args": [
@@ -29,7 +63,7 @@
             }
         },
         {
-            "name": "attach server",
+            "name": "vscode extension - attach server (rust)",
             "type": "lldb",
             "request": "attach",
             "pid": "${input:pickTachProcess}",
