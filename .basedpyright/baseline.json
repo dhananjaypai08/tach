@@ -1543,6 +1543,14 @@
                 "code": "reportUnusedParameter",
                 "range": {
                     "startColumn": 4,
+                    "endColumn": 11,
+                    "lineCount": 1
+                }
+            },
+            {
+                "code": "reportUnusedParameter",
+                "range": {
+                    "startColumn": 4,
                     "endColumn": 14,
                     "lineCount": 1
                 }
@@ -10239,48 +10247,6 @@
                 "range": {
                     "startColumn": 29,
                     "endColumn": 62,
-                    "lineCount": 1
-                }
-            }
-        ],
-        "./python/tests/test_pytest_plugin.py": [
-            {
-                "code": "reportUnknownMemberType",
-                "range": {
-                    "startColumn": 8,
-                    "endColumn": 27,
-                    "lineCount": 1
-                }
-            },
-            {
-                "code": "reportUnknownMemberType",
-                "range": {
-                    "startColumn": 12,
-                    "endColumn": 35,
-                    "lineCount": 1
-                }
-            },
-            {
-                "code": "reportUnknownMemberType",
-                "range": {
-                    "startColumn": 12,
-                    "endColumn": 35,
-                    "lineCount": 1
-                }
-            },
-            {
-                "code": "reportUnknownMemberType",
-                "range": {
-                    "startColumn": 12,
-                    "endColumn": 35,
-                    "lineCount": 1
-                }
-            },
-            {
-                "code": "reportUnknownMemberType",
-                "range": {
-                    "startColumn": 12,
-                    "endColumn": 35,
                     "lineCount": 1
                 }
             }

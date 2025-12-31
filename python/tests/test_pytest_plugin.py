@@ -5,11 +5,17 @@ import pytest
 pytest_plugins = ["pytester"]
 
 
+def makepyfile(pytester: pytest.Pytester, *args: str | bytes, **kwargs: str | bytes):
+    """workaround for https://github.com/pytest-dev/pytest/pull/14080"""
+    _ = pytester.makepyfile(*args, **kwargs)  # pyright: ignore[reportUnknownMemberType]
+
+
 @pytest.fixture
 def tach_project(pytester: pytest.Pytester):
     """Create a basic tach project structure."""
     _ = pytester.makefile(".toml", tach='source_roots = ["."]')
-    _ = pytester.makepyfile(
+    makepyfile(
+        pytester,
         src_module="""
 def add(a, b):
     return a + b
@@ -61,7 +67,8 @@ class TestPytestPluginSkipping:
     def test_source_change_runs_dependent_tests(self, tach_project: pytest.Pytester):
         """When a source file changes, only tests that import it should run."""
         # Modify the source file
-        _ = tach_project.makepyfile(
+        makepyfile(
+            tach_project,
             src_module="""
 def add(a, b):
     return a + b
@@ -70,7 +77,7 @@ def subtract(a, b):
     return a - b
 
 # Modified
-"""
+""",
         )
         _ = tach_project.run("git", "add", "src_module.py")
         _ = tach_project.run("git", "commit", "-m", "modify source")
@@ -87,7 +94,8 @@ def subtract(a, b):
     def test_test_file_change_runs_that_file(self, tach_project: pytest.Pytester):
         """When a test file is directly modified, it should run."""
         # Modify a test file
-        _ = tach_project.makepyfile(
+        makepyfile(
+            tach_project,
             test_no_import="""
 def test_standalone_1():
     assert True
@@ -97,7 +105,7 @@ def test_standalone_2():
 
 def test_standalone_3():
     assert "new test"
-"""
+""",
         )
         _ = tach_project.run("git", "add", "test_no_import.py")
         _ = tach_project.run("git", "commit", "-m", "add test")
@@ -110,7 +118,8 @@ def test_standalone_3():
 class TestPytestPluginCounting:
     def test_counts_all_tests_in_file(self, tach_project: pytest.Pytester):
         """Should correctly count all tests including parametrized ones."""
-        _ = tach_project.makepyfile(
+        makepyfile(
+            tach_project,
             test_parametrized="""
 import pytest
 
@@ -124,7 +133,7 @@ def test_param_add(x, y, expected):
 
 def test_regular():
     assert True
-"""
+""",
         )
         _ = tach_project.run("git", "add", "test_parametrized.py")
         _ = tach_project.run("git", "commit", "--amend", "--no-edit")
@@ -136,7 +145,8 @@ def test_regular():
 
     def test_counts_tests_in_classes(self, tach_project: pytest.Pytester):
         """Should correctly count tests inside test classes."""
-        _ = tach_project.makepyfile(
+        makepyfile(
+            tach_project,
             test_class="""
 class TestGroup:
     def test_one(self):
@@ -148,7 +158,7 @@ class TestGroup:
 class TestAnotherGroup:
     def test_three(self):
         assert True
-"""
+""",
         )
         _ = tach_project.run("git", "add", "test_class.py")
         _ = tach_project.run("git", "commit", "--amend", "--no-edit")
