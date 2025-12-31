@@ -1,10 +1,10 @@
 from __future__ import annotations
 
-from copy import copy
 from pathlib import Path
-from typing import Any, Protocol
+from typing import Any, Generator, Protocol
 
 import pytest
+from pytest import Collector
 
 from tach import filesystem as fs
 from tach.errors import TachSetupError
@@ -17,6 +17,10 @@ class TachConfig(Protocol):
     tach_handler: TachPytestPluginHandler
 
     def getoption(self, name: str) -> Any: ...
+
+
+class HasTachConfig(Protocol):
+    config: TachConfig
 
 
 def pytest_addoption(parser: pytest.Parser):
@@ -59,35 +63,44 @@ def pytest_configure(config: TachConfig):
     )
 
 
-def pytest_collection_modifyitems(
-    session: pytest.Session,
-    config: TachConfig,
-    items: list[pytest.Item],
-):
-    handler = config.tach_handler
-    seen: set[Path] = set()
-    for item in copy(items):
-        if not item.path:
-            continue
-        if str(item.path) in handler.removed_test_paths:
-            handler.num_removed_items += 1
-            items.remove(item)
-            continue
-        if item.path in seen:
-            continue
+def _count_items(collector: Collector) -> int:
+    """Recursively count test items from a collector."""
+    count = 0
+    for item in collector.collect():
+        if isinstance(item, Collector):
+            # It's a collector (e.g., Class), recurse
+            count += _count_items(item)
+        else:
+            # It's a test item
+            count += 1
+    return count
 
-        if str(item.path) in handler.all_affected_modules:
-            # If this test file was changed,
-            # then we know we need to rerun it
-            seen.add(item.path)
-            continue
 
-        if handler.should_remove_items(file_path=item.path.resolve()):
-            handler.num_removed_items += 1
-            items.remove(item)
-            handler.remove_test_path(item.path)
+@pytest.hookimpl(wrapper=True)
+def pytest_collect_file(
+    file_path: Path, parent: HasTachConfig
+) -> Generator[None, list[Collector], list[Collector]]:
+    handler = parent.config.tach_handler
+    # Skip any paths that already get filtered out by other hook impls
+    result = yield
+    if not result:
+        return result
 
-        seen.add(item.path)
+    resolved_path = file_path.resolve()
+
+    # If this test file was changed, keep it
+    if str(resolved_path) in handler.all_affected_modules:
+        return result
+
+    # Check if file should be removed based on its imports
+    if handler.should_remove_items(file_path=resolved_path):
+        # Recursively count all test items before discarding
+        for collector in result:
+            handler.num_removed_items += _count_items(collector)
+        handler.remove_test_path(file_path)
+        return []
+
+    return result
 
 
 def pytest_report_collectionfinish(
